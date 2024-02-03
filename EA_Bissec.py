@@ -1,13 +1,13 @@
-def bissecao(func, a, b, max_iter=50, tol_err=1E-3):
-    '''Solução aproximada de f(x)=0 no intervalo [a,b] pelo método da bisseção.
+def bissecao(func, a, b, max_iter=50, tol_err=1E-6):
+    '''
+    Solução aproximada de f(x)=0 no intervalo [a,b] pelo método da bisseção.
 
     Parâmetros
     ----------
     func : função
         A função para a qual estamos tentando aproximar a solução f(x)=0.
     a,b : números
-        O intervalo no qual será procurada a solução. A função retorna None
-        se f(a)*f(b) >= 0, já que a solução não é garantida.
+        O intervalo no qual será procurada a solução.
     max_iter : (positivo) inteiro
         O número máximo de iterações que do método.
     tol_err : (positivo) real
@@ -16,11 +16,9 @@ def bissecao(func, a, b, max_iter=50, tol_err=1E-3):
     Retorna
     -------
     x : número
-        The midpoint of the Nth interval computed by the bisection method. The
-        initial interval [a_0,b_0] is given by [a,b]. If f(m_n) == 0 for some
-        midpoint m_n = (a_n + b_n)/2, then the function returns this solution.
-        If all signs of values f(a_n), f(b_n) and f(m_n) are the same at any
-        iteration, the bisection method fails and return None.
+        Raiz da função, dentro da tolerância do erro, calculada pelo método
+        da bisseção. Retorna None se não houver raiz dentro do intervalo
+        fornecido.
 
     Examples
     --------
@@ -56,25 +54,27 @@ def bissecao(func, a, b, max_iter=50, tol_err=1E-3):
 
     #cálculo do método da bisseção
     for n in range(max_iter):
-        x = 0.5*(a+b)           #usando o valor médio do intervalo como estimativa
+        x = (a+b)/2           #usando o valor médio do intervalo como estimativa
         f_x = func(x)
+        if (abs(f_x) < tol_err):
+            print("Resposta encontrada")
+            print("x = ", x)
+            print("Iterações: ", n+1)
+            return x
+
         if (f_a*f_x < 0):
             a = a
             b = x
         elif (f_b*f_x < 0):
             a = x
             b = b
-        elif (abs(f_x) < tol_err):
-            print("Resposta encontrada")
-            print("x = ", x)
-            print("Iterações: ", n+1)
-            return x
-        else:
-            print("Método falhou.")
-            return None
-    
+
+        f_a = func(a)
+        f_b = func(b)
+
     print("Máximo número de iterações atingido")
     print("x = ", 0.5*(a+b))
+
     return 0.5*(a+b)
 
 
