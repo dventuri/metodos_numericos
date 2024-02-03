@@ -63,11 +63,9 @@ def bissecao(func, a, b, max_iter=50, tol_err=1E-6):
             return x
 
         if (f_a*f_x < 0):
-            a = a
             b = x
-        elif (f_b*f_x < 0):
+        else:
             a = x
-            b = b
 
         f_a = func(a)
         f_b = func(b)
